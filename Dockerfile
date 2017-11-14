@@ -22,7 +22,7 @@ RUN mkdir -p /etc/nginx/conf.d
 
 RUN rm -f /etc/nginx/nginx.conf
 
-VOLUME [ "/usr/share/nginx/html", "/etc/nginx/sites-available", "/etc/nginx/conf.d", "/etc/nginx/nginx.conf" ]
+VOLUME [ "/usr/share/nginx/html", "/etc/nginx" ]
 
 # Set up the html directory
 #COPY /assets/usr/share/nginx/html/ /usr/share/nginx/html/
