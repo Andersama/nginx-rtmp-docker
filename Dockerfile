@@ -1,16 +1,6 @@
 # Dockerfile for a simple Nginx stream replicator
 FROM alpine:3.4
 
-#replace nginx w/ custom configuration using a volume
-VOLUME [ "/etc/nginx/nginx.conf:/etc/nginx/nginx.conf" ]
-
-#"/usr/local/nginx/html" may be nginx's default root directory depending on install
-VOLUME [ "/usr/share/nginx/html:/usr/share/nginx/html" ]
-
-# common configuration directories
-VOLUME [ "/etc/nginx/sites-available:/etc/nginx/sites-available" ]
-VOLUME [ "/etc/nginx/conf.d:/etc/nginx/conf.d" ]
-
 # Set up user
 ENV USER nginx
 RUN adduser -s /sbin/nologin -D -H ${USER}
@@ -30,18 +20,15 @@ RUN mkdir -p /usr/share/nginx/html
 RUN mkdir -p /etc/nginx/sites-available
 RUN mkdir -p /etc/nginx/conf.d
 
-# Set up the html directory
-COPY /assets/usr/share/nginx/html/ /usr/share/nginx/html/
+RUN rm -f /etc/nginx/nginx.conf
 
-# Set up sites-available and conf.d
-#COPY /assets/etc/nginx/sites-available /etc/nginx/sites-available/
-#COPY /assets/etc/nginx/conf.d /etc/nginx/conf.d/
+VOLUME [ "/usr/share/nginx/html", "/etc/nginx/sites-available", "/etc/nginx/conf.d", "/etc/nginx/nginx.conf" ]
+
+# Set up the html directory
+#COPY /assets/usr/share/nginx/html/ /usr/share/nginx/html/
 
 # Set up config file
-#COPY /assets/etc/nginx/nginx.conf /etc/nginx/nginx.conf
-COPY /assets/etc/nginx /etc/nginx/
-
-#COPY assets/ /
+#COPY /assets/etc/nginx /etc/nginx/
 
 # Forward logs to Docker
 RUN ln -sf /dev/stdout /var/log/nginx/access.log && \
